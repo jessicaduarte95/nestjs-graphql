@@ -2,9 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-"""Cursor for paging through collections"""
-scalar ConnectionCursor
-
 input CreateManyStudentsInput {
   """Array of records to create"""
   students: [CreateStudentInput!]!
@@ -18,20 +15,6 @@ input CreateOneStudentInput {
 input CreateStudentInput {
   key: String!
   name: String!
-}
-
-input CursorPaging {
-  """Paginate after opaque cursor"""
-  after: ConnectionCursor
-
-  """Paginate before opaque cursor"""
-  before: ConnectionCursor
-
-  """Paginate first"""
-  first: Int
-
-  """Paginate last"""
-  last: Int
 }
 
 type DeleteManyResponse {
@@ -58,18 +41,20 @@ type Mutation {
   updateOneStudent(input: UpdateOneStudentInput!): Student!
 }
 
-type PageInfo {
-  """The cursor of the last returned record."""
-  endCursor: ConnectionCursor
-
+type OffsetPageInfo {
   """true if paging forward and there are more records."""
   hasNextPage: Boolean
 
   """true if paging backwards and there are more records."""
   hasPreviousPage: Boolean
+}
 
-  """The cursor of the first returned record."""
-  startCursor: ConnectionCursor
+input OffsetPaging {
+  """Limit the number of records returned"""
+  limit: Int
+
+  """Offset to start returning records from"""
+  offset: Int
 }
 
 type Query {
@@ -82,7 +67,7 @@ type Query {
     filter: StudentFilter! = {}
 
     """Limit or page results."""
-    paging: CursorPaging! = {first: 10}
+    paging: OffsetPaging! = {limit: 10}
 
     """Specify to sort results."""
     sorting: [StudentSort!]! = []
@@ -130,11 +115,11 @@ type StudentAggregateGroupBy {
 }
 
 type StudentConnection {
-  """Array of edges."""
-  edges: [StudentEdge!]!
+  """Array of nodes."""
+  nodes: [Student!]!
 
   """Paging information"""
-  pageInfo: PageInfo!
+  pageInfo: OffsetPageInfo!
 
   """Fetch total count of records"""
   totalCount: Int!
@@ -156,14 +141,6 @@ type StudentDeleteResponse {
   id: String
   key: String
   name: String
-}
-
-type StudentEdge {
-  """Cursor for this node."""
-  cursor: ConnectionCursor!
-
-  """The node containing the Student"""
-  node: Student!
 }
 
 input StudentFilter {

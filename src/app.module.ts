@@ -21,7 +21,7 @@ import { StudentsModule } from './modules/students/students.module';
       username: 'root',
       password: 'password',
       database: 'test',
-      entities: ['entity/*.js,modules/**/entity/*.js'],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
     StudentsModule,
